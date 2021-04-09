@@ -43,14 +43,16 @@ int main() {
         DIR *dp;
         struct dirent *ep;
         pid_t cid1, cid2, cid3, cid4, cid5, cid6, cid7, cid8, cid9, cid10, cid11, cid12;
+        pid_t cidT1, cidT2, cidT3, cidT4, cidT5;
         time_t times = time(NULL);
         int status1, status2, status3, status4, status5, status6, status7, status8, status9;
-        int statA, statB, statC;
+        int statA, statB, statC, statD, statE;
+        
         struct tm* date = localtime(&times);
         char birthday[40];
         strftime(birthday, 30, "%m-%d_%H:%M:%S", date);
-        
-        //if (strcmp(birthday, "04-09_22:22:00")!=0)continue;
+
+        if (strcmp(birthday, "04-09_16:22:00")!=0)continue;
 
         cid1 = fork();
         if (cid1 < 0)exit(0);
@@ -96,8 +98,8 @@ int main() {
         if (dp != NULL)
         {
             int statTemp;
+            char dest[500]="/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal1/Musyik";
             while ((ep = readdir (dp))) {
-                    char dest[500]="/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal1/Musyik";
                     char src[500];
                     sprintf(src, "%s/%s", pathMusik, ep->d_name);
                     cid10 = fork();
@@ -108,6 +110,13 @@ int main() {
                     }
                 }
             (void) closedir (dp);
+            while(wait(&statTemp)>0);
+            cidT1 = fork();
+            if (cidT1 < 0)exit(0);
+            if (cidT1 == 0){
+                char *ag[]={"rm", "-r", "MUSIK", NULL};
+                execv ("/bin/rm", ag);
+            }
         } else perror ("Couldn't open the directory");        
 
         //Fylem
@@ -127,6 +136,33 @@ int main() {
             execv("/bin/unzip", ag);
         }
 
+        while(wait(&statB)>0);
+        char pathFilm[] = "/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal1/FILM";
+        dp = opendir(pathFilm);
+        if (dp != NULL)
+        {
+            int statTemp;
+            char dest[500]="/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal1/Fylem";
+            while ((ep = readdir (dp))) {
+                    char src[500];
+                    sprintf(src, "%s/%s", pathFilm, ep->d_name);
+                    cid10 = fork();
+                    if (cid10 < 0) exit(0);
+                    if (cid10 == 0){
+                        char *ag[] = {"mv", "-t", dest, src, NULL};
+                        execv("/bin/mv", ag);
+                    }
+                }
+            (void) closedir (dp);
+            while(wait(&statTemp)>0);
+            cidT2 = fork();
+            if (cidT2 < 0)exit(0);
+            if (cidT2 == 0){
+                char *ag[]={"rm", "-r", "FILM", NULL};
+                execv ("/bin/rm", ag);
+            }
+        } else perror ("Couldn't open the directory"); 
+
         //Pyoto
         while(wait(&status3)>0);
         cid6 = fork();
@@ -144,6 +180,48 @@ int main() {
             execv("/bin/unzip", ag);
         }
 
-        sleep(2000);
+        while(wait(&statB)>0);
+        char pathFoto[] = "/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal1/FOTO";
+        dp = opendir(pathFoto);
+        if (dp != NULL)
+        {
+            int statTemp;
+            char dest[500]="/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal1/Pyoto";
+            while ((ep = readdir (dp))) {
+                    char src[500];
+                    sprintf(src, "%s/%s", pathFoto, ep->d_name);
+                    cid10 = fork();
+                    if (cid10 < 0) exit(0);
+                    if (cid10 == 0){
+                        char *ag[] = {"mv", "-t", dest, src, NULL};
+                        execv("/bin/mv", ag);
+                    }
+                }
+            (void) closedir (dp);
+            while(wait(&statTemp)>0);
+            cidT3 = fork();
+            if (cidT3 < 0)exit(0);
+            if (cidT3 == 0){
+                char *ag[]={"rm", "-r", "FOTO", NULL};
+                execv ("/bin/rm", ag);
+            }
+        } else perror ("Couldn't open the directory");
+    
+        while (wait(&statD)>0);
+        cidT4 = fork();
+        if (cidT4 < 0)exit(0);
+        if (cidT4 == 0){
+            char *ag[] = {"zip", "-r", "Lopyu_Stevany.zip", "Musyik", "Fylem", "Pyoto", NULL};
+            execv("/bin/zip", ag);
+        }
+
+        while (wait(&statE)>0);
+        cidT5 = fork();
+        if (cidT5 < 0)exit(0);
+        if (cidT5 == 0){
+            char *ag[] = {"rm", "-rf", "Musyik", "Fylem", "Pyoto", NULL};
+            execv("/bin/rm", ag);
+        }
+
     }
 }
