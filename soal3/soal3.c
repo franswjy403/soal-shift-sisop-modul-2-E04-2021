@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
     }
     
     FILE *killer = fopen("killer.sh", "w+");
-    fprintf(killer, "#!/bin/bash\nflag=%d\nif [ $flag -eq 1 ]\nthen killall ./soal3\nelse\nkill %d\nfi\nrm killer.sh", flag, getpid()+3);
+    fprintf(killer, "#!/bin/bash\nflag=%d\nif [ $flag -eq 1 ]\nthen killall ./soal3\nelse\nkill %d\nfi\nrm killer.sh", flag, getpid()+1);
     fclose(killer);
 
     pid_t pid, sid;
@@ -120,13 +120,9 @@ int main(int argc, char* argv[]) {
                 char temp[100];
                 strcpy(temp, "Download Success");
                 strcpy(temp, caesarChiper(temp));
-                cid4 = fork();
-                    if (cid4 < 0) exit(EXIT_FAILURE);
-                    if (cid4 == 0){
-                        FILE *fp = fopen("status.txt", "w+");
-                        fprintf(fp, "%s", temp);
-                        fclose(fp);
-                }
+                FILE *fp = fopen("status.txt", "w+");
+                fprintf(fp, "%s", temp);
+                fclose(fp);
             }
             while(wait(&status3)>0);
             chdir("..");
@@ -141,14 +137,10 @@ int main(int argc, char* argv[]) {
             }
 
             while(wait(&status4)>0);
-
-            cid6 = fork();
-            if (cid6 < 0) exit(EXIT_FAILURE);
-            if (cid6 == 0){
-                char *ag[] = {"rm", "-r", now, NULL};
-                execv("/bin/rm", ag);
-            }
+            char *ag[] = {"rm", "-r", now, NULL};
+            execv("/bin/rm", ag);
         }
+
         sleep(40);
     }
 }
