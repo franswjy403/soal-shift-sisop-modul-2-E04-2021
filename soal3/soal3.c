@@ -11,18 +11,14 @@
 #include<wait.h>
 
 int main() {
-  pid_t pid, sid;        // Variabel untuk menyimpan PID
+  pid_t pid, sid;
 
-  pid = fork();     // Menyimpan PID dari Child Process
+  pid = fork();
 
-  /* Keluar saat fork gagal
-  * (nilai variabel pid < 0) */
   if (pid < 0) {
     exit(EXIT_FAILURE);
   }
 
-  /* Keluar saat fork berhasil
-  * (nilai variabel pid adalah PID dari child process) */
   if (pid > 0) {
     exit(EXIT_SUCCESS);
   }
@@ -50,10 +46,41 @@ int main() {
         strftime(now, 30, "%Y-%m-%d_%H:%M:%S", date1);
         cid1 = fork();
 
-        if (cid1 < 0) exit(0);
+        if (cid1 < 0) exit(EXIT_FAILURE);
         if (cid1 == 0) {
-            char *ag[] = {"/bin/mkdir", "-p",now, NULL};
+            char *ag[] = {"/bin/mkdir", "-p", now, NULL};
             execv("/bin/mkdir", ag);
+        }
+
+        int status;
+        
+        while (wait(&status)>0);
+
+        cid2 = fork();
+        if (cid2 < 0) exit(EXIT_FAILURE);
+        if (cid2 == 0){
+
+            if ((chdir(now)) < 0) {
+                    exit(EXIT_FAILURE);
+                }
+
+            int i;
+            for (i=0;i<10;i++){
+                time_t times2 = time(NULL);
+                struct tm* date2 = localtime(&times2);
+                char now2[35];
+                strftime(now2, 30, "%Y-%m-%d_%H:%M:%S", date2);
+                char photo[1000];
+                sprintf(photo, "https://picsum.photos/%ld", (times2 % 1000) + 50);
+
+                cid3 = fork();
+                if (cid3 < 0) exit(0);
+                if (cid3 == 0){
+                    char *ag[] = {"wget", photo, "-O", now2, "-o", "/dev/null", NULL};
+                    execv("/usr/bin/wget", ag);
+                }
+                sleep(5);
+            }
         }
         sleep(40);
     }
