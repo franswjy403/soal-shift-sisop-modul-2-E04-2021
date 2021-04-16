@@ -45,9 +45,9 @@ int main(int argc, char* argv[]) {
     else if (strcmp(argv[1], "-x")==0){
         flag=2;
     }
-    printf("%d\n", getpid());
+    
     FILE *killer = fopen("killer.sh", "w+");
-    fprintf(killer, "#!/bin/bash\nflag=%d\nif [ $flag -eq 1 ]\nthen killall ./soal3\nelse\nkill %d\nfi\nrm killer.sh", flag, getpid()+1);
+    fprintf(killer, "#!/bin/bash\nflag=%d\nif [ $flag -eq 1 ]\nthen killall ./soal3\nelse\nkill %d\nfi\nrm killer.sh", flag, getpid()+3);
     fclose(killer);
 
     pid_t pid, sid;
