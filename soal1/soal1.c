@@ -39,9 +39,9 @@ int main() {
     close(STDERR_FILENO);
 
     while (1) {
-        pid_t cid1, cid2, cid3, cid4, cid5, cid6;
+        pid_t cid1, cid2, cid3, cid4, cid5, cid6, cid7, cid8, cid9;
         time_t times = time(NULL);
-        int status1, status2, status3;
+        int status1, status2, status3, status4, status5, status6, status7, status8, status9;
         struct tm* date = localtime(&times);
         char birthday[40];
         strftime(birthday, 30, "%m-%d_%H:%M:%S", date);
@@ -54,26 +54,12 @@ int main() {
             char *ag[] = {"mkdir", "-p", "Musyik", NULL};
             execv("/bin/mkdir", ag);
         }
-
-        cid4 = fork();
-        if (cid4 < 0) exit(0);
-        if (cid4 == 0){
-            char *ag[] = {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1ZG8nRBRPquhYXq_sISdsVcXx5VdEgi-J&export=download", "-O", "Musyik_for_stevany.zip", "-o", "/dev/null", NULL};
-            execv("/bin/wget", ag);
-        }
         
         cid2 = fork();
         if (cid2 < 0)exit(0);
         if (cid2 == 0){
             char *ag[] = {"mkdir", "-p", "Fylem", NULL};
             execv("/bin/mkdir", ag);
-        }
-
-        cid5 = fork();
-        if (cid5 < 0) exit(0);
-        if (cid5 == 0){
-            char *ag[] = {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1ktjGgDkL0nNpY-vT7rT7O6ZI47Ke9xcp&export=download", "-O", "Fylem_for_stevany.zip", "-o", "/dev/null", NULL};
-            execv("/bin/wget", ag);
         }
 
         cid3 = fork();
@@ -83,6 +69,39 @@ int main() {
             execv("/bin/mkdir", ag);
         }
 
+        while(wait(&status1)>0);
+        cid4 = fork();
+        if (cid4 < 0) exit(0);
+        if (cid4 == 0){
+            char *ag[] = {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1ZG8nRBRPquhYXq_sISdsVcXx5VdEgi-J&export=download", "-O", "Musyik_for_stevany.zip", "-o", "/dev/null", NULL};
+            execv("/bin/wget", ag);
+        }
+
+        while(wait(&status4)>0);
+        cid7 = fork();
+        if (cid7 < 0) exit (0);
+        if (cid7 == 0){
+            char *ag[] = {"unzip", "Musyik_for_stevany.zip", "-d", "/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal1", NULL};
+            execv("/bin/unzip", ag);
+        }
+
+        while(wait(&status2)>0);
+        cid5 = fork();
+        if (cid5 < 0) exit(0);
+        if (cid5 == 0){
+            char *ag[] = {"wget", "--no-check-certificate", "https://drive.google.com/uc?id=1ktjGgDkL0nNpY-vT7rT7O6ZI47Ke9xcp&export=download", "-O", "Fylem_for_stevany.zip", "-o", "/dev/null", NULL};
+            execv("/bin/wget", ag);
+        }
+
+        while(wait(&status6)>0);
+        cid8 = fork();
+        if (cid8 < 0) exit (0);
+        if (cid8 == 0){
+            char *ag[] = {"unzip", "Fylem_for_stevany.zip", "-d", "/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal1", NULL};
+            execv("/bin/unzip", ag);
+        }
+
+        while(wait(&status3)>0);
         cid6 = fork();
         if (cid6 < 0) exit(0);
         if (cid6 == 0){
@@ -90,6 +109,14 @@ int main() {
             execv("/bin/wget", ag);
         }
 
-        sleep(30);
+        while(wait(&status5)>0);
+        cid9 = fork();
+        if (cid9 < 0) exit (0);
+        if (cid9 == 0){
+            char *ag[] = {"unzip", "Pyoto_for_stevany.zip", "-d", "/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal1", NULL};
+            execv("/bin/unzip", ag);
+        }
+
+        sleep(2000);
     }
 }
