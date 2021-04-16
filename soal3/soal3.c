@@ -10,6 +10,28 @@
 #include<time.h>
 #include<wait.h>
 
+char* caesarChiper (char string[]){
+    int i;
+    for (i=0;i<strlen(string);i++){
+        char temp = string[i];
+        if (temp>='A' && temp<='Z'){
+            temp+=5;
+            if (temp>'Z'){
+                temp = temp - 'Z' + 'A' - 1;
+            }
+            string[i]=temp;
+        }
+        else if(temp>='a' && temp<='z'){
+            temp+=5;
+            if (temp>'z'){
+                temp = temp - 'z' + 'a' - 1;
+            }
+            string[i]=temp;
+        }
+    }
+    return string;
+}
+
 int main() {
     pid_t pid, sid;
 
@@ -79,11 +101,14 @@ int main() {
             }
 
             if (i>=0){
+                char temp[100];
+                strcpy(temp, "Download Success");
+                strcpy(temp, caesarChiper(temp));
                 cid4 = fork();
                     if (cid4 < 0) exit(EXIT_FAILURE);
                     if (cid4 == 0){
                         FILE *fp = fopen("status.txt", "w+");
-                        fprintf(fp, "Download Success");
+                        fprintf(fp, "%s", temp);
                         fclose(fp);
                 }
             }
