@@ -140,7 +140,6 @@ int main(int argc, char* argv[]) {
             char *ag[] = {"rm", "-r", now, NULL};
             execv("/bin/rm", ag);
         }
-
         sleep(40);
     }
 }
