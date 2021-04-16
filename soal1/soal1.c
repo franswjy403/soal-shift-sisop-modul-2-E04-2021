@@ -9,6 +9,7 @@
 #include <string.h>
 #include <time.h>
 #include <wait.h>
+#include <dirent.h>
 
 int main() {
     pid_t pid, sid;
@@ -39,9 +40,12 @@ int main() {
     close(STDERR_FILENO);
 
     while (1) {
-        pid_t cid1, cid2, cid3, cid4, cid5, cid6, cid7, cid8, cid9;
+        DIR *dp;
+        struct dirent *ep;
+        pid_t cid1, cid2, cid3, cid4, cid5, cid6, cid7, cid8, cid9, cid10, cid11, cid12;
         time_t times = time(NULL);
         int status1, status2, status3, status4, status5, status6, status7, status8, status9;
+        int statA, statB, statC;
         struct tm* date = localtime(&times);
         char birthday[40];
         strftime(birthday, 30, "%m-%d_%H:%M:%S", date);
@@ -69,6 +73,7 @@ int main() {
             execv("/bin/mkdir", ag);
         }
 
+        //Musyik
         while(wait(&status1)>0);
         cid4 = fork();
         if (cid4 < 0) exit(0);
@@ -85,6 +90,27 @@ int main() {
             execv("/bin/unzip", ag);
         }
 
+        while(wait(&statA)>0);
+        char pathMusik[] = "/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal1/MUSIK";
+        dp = opendir(pathMusik);
+        if (dp != NULL)
+        {
+            int statTemp;
+            while ((ep = readdir (dp))) {
+                    char dest[500]="/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal1/Musyik";
+                    char src[500];
+                    sprintf(src, "%s/%s", pathMusik, ep->d_name);
+                    cid10 = fork();
+                    if (cid10 < 0) exit(0);
+                    if (cid10 == 0){
+                        char *ag[] = {"mv", "-t", dest, src, NULL};
+                        execv("/bin/mv", ag);
+                    }
+                }
+            (void) closedir (dp);
+        } else perror ("Couldn't open the directory");        
+
+        //Fylem
         while(wait(&status2)>0);
         cid5 = fork();
         if (cid5 < 0) exit(0);
@@ -101,6 +127,7 @@ int main() {
             execv("/bin/unzip", ag);
         }
 
+        //Pyoto
         while(wait(&status3)>0);
         cid6 = fork();
         if (cid6 < 0) exit(0);
