@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+
 typedef struct animals
 {
     char nama[50];
