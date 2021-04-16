@@ -32,7 +32,24 @@ char* caesarChiper (char string[]){
     return string;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    if (argc!=2 || (strcmp(argv[1], "-z")!=0 && strcmp(argv[1], "-x")!=0)){
+        printf ("Command not found\n");
+        exit(0);
+    }
+
+    int flag;
+    if (strcmp(argv[1], "-z")==0){
+        flag=1;
+    }
+    else if (strcmp(argv[1], "-x")==0){
+        flag=2;
+    }
+    printf("%d\n", getpid());
+    FILE *killer = fopen("killer.sh", "w+");
+    fprintf(killer, "#!/bin/bash\nflag=%d\nif [ $flag -eq 1 ]\nthen killall ./soal3\nelse\nkill %d\nfi\nrm killer.sh", flag, getpid()+1);
+    fclose(killer);
+
     pid_t pid, sid;
 
     pid = fork();
@@ -60,7 +77,6 @@ int main() {
     close(STDOUT_FILENO);
     close(STDERR_FILENO);
     int status, status2, status3, status4;
-    
     while (1) {
         pid_t cid1, cid2, cid3, cid4, cid5, cid6;
         time_t times = time(NULL);
@@ -81,7 +97,6 @@ int main() {
         cid2 = fork();
         if (cid2 < 0) exit(EXIT_FAILURE);
         if (cid2 == 0){
-            printf("Masuk fork download\n");
             chdir(now);
             int i;
             for (i=0;i<10;i++){
