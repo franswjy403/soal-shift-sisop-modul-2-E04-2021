@@ -60,8 +60,9 @@ int main() {
     close(STDOUT_FILENO);
     close(STDERR_FILENO);
     int status, status2, status3, status4;
+    
     while (1) {
-        pid_t cid1, cid2, cid3, cid4;
+        pid_t cid1, cid2, cid3, cid4, cid5, cid6;
         time_t times = time(NULL);
         struct tm* date1 = localtime(&times);
         char now[35];
@@ -114,6 +115,24 @@ int main() {
             }
             while(wait(&status3)>0);
             chdir("..");
+            char zipName[100];
+            sprintf(zipName, "%s.zip", now);
+
+            cid5 = fork();
+            if (cid5 < 0) exit(EXIT_FAILURE);
+            if (cid5 == 0){
+                char *ag[] = {"zip", "-r", zipName, now, NULL};
+                execv ("/bin/zip", ag);
+            }
+
+            while(wait(&status4)>0);
+
+            cid6 = fork();
+            if (cid6 < 0) exit(EXIT_FAILURE);
+            if (cid6 == 0){
+                char *ag[] = {"rm", "-r", now, NULL};
+                execv("/bin/rm", ag);
+            }
         }
         sleep(40);
     }
