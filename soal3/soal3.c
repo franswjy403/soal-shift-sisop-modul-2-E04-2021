@@ -11,41 +11,41 @@
 #include<wait.h>
 
 int main() {
-  pid_t pid, sid;
+    pid_t pid, sid;
 
-  pid = fork();
+    pid = fork();
 
-  if (pid < 0) {
-    exit(EXIT_FAILURE);
-  }
+    if (pid < 0) {
+        exit(EXIT_FAILURE);
+    }
 
-  if (pid > 0) {
-    exit(EXIT_SUCCESS);
-  }
+    if (pid > 0) {
+        exit(EXIT_SUCCESS);
+    }
 
-  umask(0);
+    umask(0);
 
-  sid = setsid();
-  if (sid < 0) {
-    exit(EXIT_FAILURE);
-  }
+    sid = setsid();
+    if (sid < 0) {
+        exit(EXIT_FAILURE);
+    }
 
-  if ((chdir("/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal3")) < 0) {
-    exit(EXIT_FAILURE);
-  }
+    if ((chdir("/home/frans0416/Documents/sisopE/soal-shift-sisop-modul-2-E04-2021/soal3")) < 0) {
+        exit(EXIT_FAILURE);
+    }
 
-  close(STDIN_FILENO);
-  close(STDOUT_FILENO);
-  close(STDERR_FILENO);
-
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
+    int status, status2, status3, status4;
     while (1) {
         pid_t cid1, cid2, cid3, cid4;
         time_t times = time(NULL);
         struct tm* date1 = localtime(&times);
         char now[35];
         strftime(now, 30, "%Y-%m-%d_%H:%M:%S", date1);
-        cid1 = fork();
 
+        cid1 = fork();
         if (cid1 < 0) exit(EXIT_FAILURE);
         if (cid1 == 0) {
             char *ag[] = {"/bin/mkdir", "-p", now, NULL};
@@ -55,15 +55,11 @@ int main() {
         int status;
         
         while (wait(&status)>0);
-
         cid2 = fork();
         if (cid2 < 0) exit(EXIT_FAILURE);
         if (cid2 == 0){
-
-            if ((chdir(now)) < 0) {
-                    exit(EXIT_FAILURE);
-                }
-
+            printf("Masuk fork download\n");
+            chdir(now);
             int i;
             for (i=0;i<10;i++){
                 time_t times2 = time(NULL);
@@ -81,6 +77,18 @@ int main() {
                 }
                 sleep(5);
             }
+
+            if (i>=0){
+                cid4 = fork();
+                    if (cid4 < 0) exit(EXIT_FAILURE);
+                    if (cid4 == 0){
+                        FILE *fp = fopen("status.txt", "w+");
+                        fprintf(fp, "Download Success");
+                        fclose(fp);
+                }
+            }
+            while(wait(&status3)>0);
+            chdir("..");
         }
         sleep(40);
     }
