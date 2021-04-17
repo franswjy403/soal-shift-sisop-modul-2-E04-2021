@@ -205,7 +205,9 @@ int main() {
                 execv ("/bin/rm", ag);
             }
         } else perror ("Couldn't open the directory");
-    
+        
+        if (strcmp(birthday, "04-09_22:22:00")!=0)continue;
+        
         while (wait(&statD)>0);
         cidT4 = fork();
         if (cidT4 < 0)exit(0);
