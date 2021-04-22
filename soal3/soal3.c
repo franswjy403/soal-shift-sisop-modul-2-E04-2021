@@ -116,7 +116,7 @@ int main(int argc, char* argv[]) {
                 sleep(5);
             }
 
-            if (i>=0){
+            if (i>=10){
                 char temp[100];
                 strcpy(temp, "Download Success");
                 strcpy(temp, caesarChiper(temp));
