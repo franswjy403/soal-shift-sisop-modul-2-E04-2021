@@ -141,5 +141,6 @@ int main(int argc, char* argv[]) {
             execv("/bin/rm", ag);
         }
         sleep(40);
+        int a;
     }
 }
