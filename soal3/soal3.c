@@ -124,6 +124,7 @@ int main(int argc, char* argv[]) {
                 fprintf(fp, "%s", temp);
                 fclose(fp);
             }
+            
             while(wait(&status3)>0);
             chdir("..");
             char zipName[100];
