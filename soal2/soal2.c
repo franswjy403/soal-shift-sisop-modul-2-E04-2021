@@ -150,12 +150,13 @@ int main(int argc, char const *argv[])
         countAnimals++;
     }
 
+    //2b
     for (i = 0;i<countAnimals;i++){
         if(countUniqueAnimals==0 || !checkAnimal(animal[i].jenis, countUniqueAnimals)){
             strcpy(uniqueAnimals[countUniqueAnimals++], animal[i].jenis);
         }
     }
-   
+    
     for (i=0;i<countUniqueAnimals;i++){
         cid3 = fork();
         if (cid3 < 0)exit(0);
@@ -167,6 +168,9 @@ int main(int argc, char const *argv[])
         }
     }
 
+    //end of 2b 
+
+    //2c & 2d
     while(wait(&stat3)>0);
     dp = opendir(path);
     if (dp != NULL)
@@ -197,6 +201,9 @@ int main(int argc, char const *argv[])
         (void) closedir (dp);
     } else perror ("Couldn't open the directory");
 
+    //end of 2c & 2d
+
+    //2e
     while(wait(&stat4)>0);
     dp = opendir(path);
     if (dp != NULL)
@@ -222,5 +229,7 @@ int main(int argc, char const *argv[])
         }
         (void) closedir (dp);
     } else perror ("Couldn't open the directory");
+    //end of 2e
+
     return 0;
 }
