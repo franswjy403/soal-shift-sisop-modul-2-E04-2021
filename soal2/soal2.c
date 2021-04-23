@@ -15,7 +15,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-
 typedef struct animals
 {
     char nama[50];
@@ -28,6 +27,17 @@ anmls animal[50];
 char files[100][50];
 int countFiles=0;
 char uniqueAnimals[100][100];
+
+char *makeFileName(char fileName[], int len, int pos){
+    char temp[100]="";
+    int i=pos+len+1;
+    for (;i<strlen(fileName);i++){
+        if (fileName[i]==';') break;
+        strncat(temp, &fileName[i],1);
+    }
+    char *name=temp;
+    return name;
+}
 
 void insertFiles(char fileName[]){
     int i;
@@ -93,7 +103,7 @@ int checkAnimal(char jenisAnimal[], int count){
 
 int main(int argc, char const *argv[])
 {
-    pid_t cid1, cid2, cid3, cid4, cid5, cid6;
+    pid_t cid1, cid2, cid3, cid4, cid5, cid6, cidTemp;
     int stat1, stat2, stat3, stat4, stat5, stat6;
     DIR *dp;
     struct dirent *ep;
@@ -150,13 +160,12 @@ int main(int argc, char const *argv[])
         countAnimals++;
     }
 
-    //2b
     for (i = 0;i<countAnimals;i++){
         if(countUniqueAnimals==0 || !checkAnimal(animal[i].jenis, countUniqueAnimals)){
             strcpy(uniqueAnimals[countUniqueAnimals++], animal[i].jenis);
         }
     }
-    
+   
     for (i=0;i<countUniqueAnimals;i++){
         cid3 = fork();
         if (cid3 < 0)exit(0);
@@ -168,9 +177,6 @@ int main(int argc, char const *argv[])
         }
     }
 
-    //end of 2b 
-
-    //2c & 2d
     while(wait(&stat3)>0);
     dp = opendir(path);
     if (dp != NULL)
@@ -183,16 +189,20 @@ int main(int argc, char const *argv[])
             for (j=0; j<countUniqueAnimals;j++){
                 char* flag = strstr(fileName, uniqueAnimals[j]);
                 if (flag){
+                    int pos = (int) (flag - fileName);
+                    int len = strlen (uniqueAnimals[j]);
+                    char name[100];
+                    strcpy(name, makeFileName(fileName, len, pos));
                     char dest[500];
                     char src[500];
-                    sprintf(dest, "%s/%s", path, uniqueAnimals[j]);
+                    sprintf(dest, "%s/%s/%s.jpg", path, uniqueAnimals[j], name);
                     sprintf(src, "%s/%s", path, ep->d_name);
                     if (is_regular_file(src)){
                         cid4 = fork();
                         if (cid4 < 0)exit(0);
                         if (cid4 == 0){
-                            char *ag[] = {"cp", "-f", src, dest, NULL};
-                            execv("/bin/cp", ag);
+                            char *ag[] = {"mv", "-f", src, dest, NULL};
+                            execv("/bin/mv", ag);
                         }
                     }
                 }
@@ -201,9 +211,6 @@ int main(int argc, char const *argv[])
         (void) closedir (dp);
     } else perror ("Couldn't open the directory");
 
-    //end of 2c & 2d
-
-    //2e
     while(wait(&stat4)>0);
     dp = opendir(path);
     if (dp != NULL)
@@ -229,7 +236,5 @@ int main(int argc, char const *argv[])
         }
         (void) closedir (dp);
     } else perror ("Couldn't open the directory");
-    //end of 2e
-
     return 0;
 }
