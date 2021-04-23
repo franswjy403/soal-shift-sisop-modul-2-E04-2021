@@ -201,10 +201,35 @@ int main(int argc, char const *argv[])
                         cid4 = fork();
                         if (cid4 < 0)exit(0);
                         if (cid4 == 0){
-                            char *ag[] = {"mv", "-f", src, dest, NULL};
-                            execv("/bin/mv", ag);
+                            char *ag[] = {"cp", "-f", src, dest, NULL};
+                            execv("/bin/cp", ag);
                         }
                     }
+                }
+            }
+        }
+        (void) closedir (dp);
+    } else perror ("Couldn't open the directory");
+
+    int statNew;
+    while(wait(&statNew)>0);
+    dp = opendir(path);
+    if (dp != NULL)
+    {
+        while ((ep = readdir (dp))) {
+            if ((strcmp(ep->d_name, ".")==0) || (strcmp(ep->d_name, "..")==0))continue;
+            char fileName[500];
+            sprintf(fileName, "%s", ep->d_name);
+            char src[500];
+            sprintf(src, "%s/%s", path, ep->d_name);
+            char* sign = strstr(fileName, ".jpg");
+            if (sign){
+                pid_t cidNew;
+                cidNew = fork();
+                if (cidNew < 0) exit(EXIT_FAILURE);
+                if (cidNew == 0){
+                    char *ag[] = {"rm", src, NULL};
+                    execv("/bin/rm", ag);
                 }
             }
         }
