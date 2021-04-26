@@ -5,9 +5,9 @@
 3. [Fidhia Ainun K.](https://github.com/fidhiaaka)	(05111940000203)
 
 ### List soal:
-1. [Soal 1](#soal1)
-2. [Soal 2](#soal2)
-3. [Soal 3](#soal3)
+1. [Soal 1](#Soal1)
+2. [Soal 2](#Soal2)
+3. [Soal 3](#Soal3)
 
 ## Soal 1
 Pada soal ini, Steven ingin memberikan hadiah kepada Stevany. Steven ingin memberikan Stevany zip berisikan hal-hal yang disukai Stevany. Steven ingin isi zipnya menjadi rapi dengan membuat folder masing-masing sesuai extensi. Untuk menyiapkan hadiah tersebut, Steven membutuhkan sebuah program yang dapat:
